@@ -60,6 +60,7 @@ def read_json_lines(json_fname):
 
 
 def add_indices(target, indices):
+    print("\nIndexing...")
     for indx in indices:
         if type(indx) is tuple:
             target.create_index([(fieldname, ASCENDING) for fieldname in indx])
