@@ -3,6 +3,7 @@ import json
 import os
 import sys
 import re
+from functools import wraps
 
 
 def which_watch(func):
@@ -34,6 +35,23 @@ def load_utf_json(json_file):
 def dump_utf_json(entries, json_file):
     with open(json_file, 'w', encoding='utf-8') as handler:
         json.dump(entries, handler, ensure_ascii=False, sort_keys=True, indent=2)
+
+
+def write_json_lines(func):
+
+    @wraps(func)
+    def wrapper(json_filename, *args, **kwargs):
+        count = 0
+        with open(json_filename, 'w', encoding='utf-8') as handler:
+            for entry in func(json_filename, *args, **kwargs):
+                count += 1
+                json.dump(entry, handler, ensure_ascii=False)
+                handler.write('\n')
+                if count == 1 or not count % 100000:
+                    print("\r{}".format(count), end='', flush=True)
+        print("\nTotal: {} entries".format(count))
+
+    return wrapper
 
 
 def get_base_dir():
