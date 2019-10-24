@@ -17,6 +17,15 @@ def which_watch(func):
     return wrapper
 
 
+def counter(total, every=1000):
+    count = 0
+    while True:
+        count += 1
+        if count == 1 or count == total or not count % every:
+            print("\r{} / {}".format(count, total), end=str(), flush=True)
+        yield
+
+
 def load_utf_json(json_file):
     with open(json_file, encoding='utf8') as data:
         return json.load(data)
