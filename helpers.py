@@ -68,6 +68,10 @@ def add_indices(target, indices):
             target.create_index([(indx, ASCENDING)])
 
 
+def log_missing(word):
+    pass
+
+
 def get_base_dir():
     return os.path.dirname(os.path.abspath(__file__))
 
