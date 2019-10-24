@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-from global_vars import *
+from global_vars import VERB, TRANSL
+from cooljugator_globals import COOLJUGATOR_LIST_JSON, RAW_COOLJUGATOR_PARADIGM_JSON, COOLJUGATOR_FIELDNAMES
 from helpers import which_watch, dump_utf_json, load_utf_json, counter, write_json_lines
 
 
@@ -15,10 +16,10 @@ def collect_verbs(list_json=COOLJUGATOR_LIST_JSON):
 
 @which_watch
 @write_json_lines
-def collect_paradigms(paradigm_json, list_json=COOLJUGATOR_LIST_JSON):
+def collect_paradigms(raw_paradigm_json, list_json=COOLJUGATOR_LIST_JSON):
     verbs = load_utf_json(list_json)
     exceptions = dict()
-    count = counter(len(verbs), 1)
+    count = counter(len(verbs))
     for verb, transl in verbs:
         next(count)
         paradigm, errors = get_paradigm(verb)
@@ -37,7 +38,7 @@ def collect_paradigms(paradigm_json, list_json=COOLJUGATOR_LIST_JSON):
 
 def get_paradigm(verb):
     errors = list()
-    paradigm = {fieldname: str() for fieldname in COOLJUGATOR_FIELDAMES}
+    paradigm = {fieldname: str() for fieldname in COOLJUGATOR_FIELDNAMES}
     verb = BeautifulSoup(requests.get('https://cooljugator.com/gr/' + verb).content, 'lxml')
     for fieldname in paradigm:
         try:
@@ -53,7 +54,7 @@ def get_paradigm(verb):
 def get_fieldnames(list_json=COOLJUGATOR_LIST_JSON, fieldnames_json='cooljugator_fieldnames.json'):
     fieldnames = set()
     verbs = load_utf_json(list_json)
-    count = counter(len(verbs), 1)
+    count = counter(len(verbs))
     for verb, _ in verbs:
         next(count)
         for cell in BeautifulSoup(
@@ -69,7 +70,7 @@ def get_fieldnames(list_json=COOLJUGATOR_LIST_JSON, fieldnames_json='cooljugator
 if __name__ == '__main__':
     from helpers import write_pid, delete_pid
     pid_fname = write_pid()
-    collect_paradigms(COOLJUGATOR_PARADIGM_JSON)
+    collect_paradigms(RAW_COOLJUGATOR_PARADIGM_JSON)
     delete_pid(pid_fname)
     # collect_verbs()
     # get_fieldnames()

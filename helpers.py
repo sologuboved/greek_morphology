@@ -18,12 +18,11 @@ def which_watch(func):
     return wrapper
 
 
-def counter(total, every=1000):
+def counter(total):
     count = 0
     while True:
         count += 1
-        if count == 1 or count == total or not count % every:
-            print("\r{} / {}".format(count, total), end=str(), flush=True)
+        print("\r{} / {}".format(count, total), end=str(), flush=True)
         yield
 
 
@@ -47,11 +46,16 @@ def write_json_lines(func):
                 count += 1
                 json.dump(entry, handler, ensure_ascii=False)
                 handler.write('\n')
-                if count == 1 or not count % 100000:
-                    print("\r{}".format(count), end='', flush=True)
+                print("\r{}".format(count), end='', flush=True)
         print("\nTotal: {} entries".format(count))
 
     return wrapper
+
+
+def read_json_lines(json_fname):
+    with open(json_fname, 'r') as handler:
+        for line in handler:
+            yield json.loads(line)
 
 
 def get_base_dir():
