@@ -4,6 +4,7 @@ import os
 import sys
 import re
 from functools import wraps
+from pymongo import ASCENDING
 
 
 def which_watch(func):
@@ -56,6 +57,14 @@ def read_json_lines(json_fname):
     with open(json_fname, 'r') as handler:
         for line in handler:
             yield json.loads(line)
+
+
+def add_indices(target, indices):
+    for indx in indices:
+        if type(indx) is tuple:
+            target.create_index([(fieldname, ASCENDING) for fieldname in indx])
+        else:
+            target.create_index([(indx, ASCENDING)])
 
 
 def get_base_dir():
