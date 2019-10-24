@@ -17,3 +17,5 @@ DIACRITICS = {
     'ω': ('ώ',)
 }
 DIACRITICALS = ['ά', 'έ', 'ή', 'ί', 'ϊ', 'ΐ', 'ό', 'ύ', 'ϋ', 'ΰ', 'ώ']
+NOT_FOUND = 'Not found'
+NO_VERB = 'Verb is missing'
