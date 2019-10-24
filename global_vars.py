@@ -1,5 +1,5 @@
 LOCALHOST = 'localhost'
-PORT = 2017
+PORT = 27017
 DB_NAME = 'ellinika'
 VERBS = 'verbs'
 VERB = 'verb'
