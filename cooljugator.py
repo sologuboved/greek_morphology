@@ -18,14 +18,9 @@ def collect_verbs(list_json=COOLJUGATOR_LIST_JSON):
 def collect_paradigms(paradigm_json, list_json=COOLJUGATOR_LIST_JSON):
     verbs = load_utf_json(list_json)
     exceptions = dict()
-    # count = counter(len(verbs), 1)
-    count = 0
+    count = counter(len(verbs), 1)
     for verb, transl in verbs:
-        # next(count)
-        count += 1
-        print(count)
-        if count == 20:
-            break
+        next(count)
         paradigm, errors = get_paradigm(verb)
         paradigm.update({VERB: verb, TRANSL: transl})
         if errors:
@@ -72,8 +67,11 @@ def get_fieldnames(list_json=COOLJUGATOR_LIST_JSON, fieldnames_json='cooljugator
 
 
 if __name__ == '__main__':
-    # collect_verbs()
+    from helpers import write_pid, delete_pid
+    pid_fname = write_pid()
     collect_paradigms(COOLJUGATOR_PARADIGM_JSON)
+    delete_pid(pid_fname)
+    # collect_verbs()
     # get_fieldnames()
     # p, err = get_paradigm('είμαι')
     # for i in p:
