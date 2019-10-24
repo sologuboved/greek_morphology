@@ -1,28 +1,46 @@
-from global_vars import DIACRITICS, DIACRITICALS
+from pymongo import MongoClient
+from global_vars import *
+
+
+def look_up_verb(verb, minimalistic=True, db_name=DB_NAME, coll_name=VERBS):
+    coll = MongoClient(LOCALHOST, PORT)[db_name][coll_name]
+    for guess in guess_stress(verb):
+        try:
+            res = coll.find({VERB: guess})[0]
+        except IndexError:
+            continue
+        if minimalistic:
+            return res[VERB], res[AORIST], res[FUTURUM], res[TRANSL]
+        return res[VERB], res[TRANSL], res[PARADIGM]
 
 
 def guess_stress(verb):
     for diacritical in DIACRITICALS:
         if diacritical in verb:
             return [verb]
-    conjectures = list()
+    guesses = list()
     for indx in range(len(verb)):
         char = verb[indx]
         if char in DIACRITICS:
             for diacritical in DIACRITICS[char]:
-                conjecture = verb[:indx] + diacritical
+                guess = verb[:indx] + diacritical
                 try:
-                    conjecture += verb[indx + 1:]
+                    guess += verb[indx + 1:]
                 except IndexError:
                     pass
-                conjectures.append(conjecture)
-    return conjectures
+                guesses.append(guess)
+    return guesses
+
+
+def make_readable():
+    pass
 
 
 if __name__ == '__main__':
-    for v in ('αγοραζομαι', 'αγυρντιζω', 'εντυπωσιάζομαι', 'ηχογραφω'):
-        res = guess_stress(v)
-        for r in res:
-            print(r)
-        print()
+    # for v in ('αγοραζομαι', 'αγυρντιζω', 'εντυπωσιάζομαι', 'ηχογραφω'):
+    #     for res in guess_stress(v):
+    #         print(res)
+    #     print()
+
+    pass
 
