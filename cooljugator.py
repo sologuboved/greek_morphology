@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from global_vars import *
-from helpers import which_watch, dump_utf_json, load_utf_json
+from helpers import which_watch, dump_utf_json, load_utf_json, counter, write_json_lines
 
 
 @which_watch
@@ -14,28 +14,67 @@ def collect_verbs(list_json=COOLJUGATOR_LIST_JSON):
 
 
 @which_watch
-def collect_paradigms(list_json=COOLJUGATOR_LIST_JSON, paradigm_json=COOLJUGATOR_PARADIGM_JSON):
-    for verb, translation in load_utf_json(list_json):
-        pass
+@write_json_lines
+def collect_paradigms(paradigm_json, list_json=COOLJUGATOR_LIST_JSON):
+    verbs = load_utf_json(list_json)
+    exceptions = dict()
+    # count = counter(len(verbs), 1)
+    count = 0
+    for verb, transl in verbs:
+        # next(count)
+        count += 1
+        print(count)
+        if count == 20:
+            break
+        paradigm, errors = get_paradigm(verb)
+        paradigm.update({VERB: verb, TRANSL: transl})
+        if errors:
+            exceptions[verb] = errors
+        yield paradigm
+    if exceptions:
+        print('\n\nExceptions:')
+        for exception in exceptions:
+            print(exception)
+            for item in exceptions[exception]:
+                print("     {}".format(item))
+            print()
 
 
 def get_paradigm(verb):
-    pass
-
-
-def get_fieldnames(verb):
-    fieldnames = list()
-    for cell in BeautifulSoup(
-            requests.get('https://cooljugator.com/gr/' + verb).content, 'lxml'
-    ).find_all('div', {'class': 'conjugation-cell'}):
+    errors = list()
+    paradigm = {fieldname: str() for fieldname in COOLJUGATOR_FIELDAMES}
+    verb = BeautifulSoup(requests.get('https://cooljugator.com/gr/' + verb).content, 'lxml')
+    for fieldname in paradigm:
         try:
-            fieldnames.append(cell.attrs['id'])
-        except KeyError:
+            paradigm[fieldname] = verb.find('div', {'class': 'conjugation-cell', 'id': fieldname}).attrs['data-default']
+        except AttributeError:
             pass
-    dump_utf_json(fieldnames, 'cooljugator_fieldnames.json')
+        except Exception as e:
+            errors.append((fieldname, type(e), str(e)))
+    return paradigm, errors
+
+
+@which_watch
+def get_fieldnames(list_json=COOLJUGATOR_LIST_JSON, fieldnames_json='cooljugator_fieldnames.json'):
+    fieldnames = set()
+    verbs = load_utf_json(list_json)
+    count = counter(len(verbs), 1)
+    for verb, _ in verbs:
+        next(count)
+        for cell in BeautifulSoup(
+                requests.get('https://cooljugator.com/gr/' + verb).content, 'lxml'
+        ).find_all('div', {'class': 'conjugation-cell'}):
+            try:
+                fieldnames.add(cell.attrs['id'])
+            except KeyError:
+                pass
+    dump_utf_json(sorted(list(fieldnames)), fieldnames_json)
 
 
 if __name__ == '__main__':
     # collect_verbs()
-    # collect_paradigms()
-    get_fieldnames('φτερώνω')
+    collect_paradigms(COOLJUGATOR_PARADIGM_JSON)
+    # get_fieldnames()
+    # p, err = get_paradigm('είμαι')
+    # for i in p:
+    #     print(i, "      ", p[i])
