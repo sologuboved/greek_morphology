@@ -1,10 +1,12 @@
-from global_vars import *
-from cooljugator_globals import *
+from cooljugator_globals import COOLJUGATOR_SLICES
 
 
 def process_verb_output(res, minimalistic):
     if minimalistic:
         return "{} - {} - {} ({})".format(*res)
+    return "\n\n".join(
+        ["<b>{}:</b> {}\n".format(label, ", ".join(res[tense])) for label, tense in COOLJUGATOR_SLICES]
+    )
 
 
 def get_links(word):
