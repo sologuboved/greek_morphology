@@ -30,7 +30,7 @@ def main():
 
     start_handler = CommandHandler('start', start)
     verb_handler = CommandHandler('v', send_minimalistic_verb)
-    conjug_handler = CommandHandler('conjug', send_verb_paradigm)
+    conjug_handler = CommandHandler('conj', send_verb_paradigm)
 
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(verb_handler)
