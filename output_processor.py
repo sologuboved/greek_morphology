@@ -3,7 +3,8 @@ from cooljugator_globals import *
 
 
 def process_verb_output(res, minimalistic):
-    pass
+    if minimalistic:
+        return "{} - {} - {} ({})".format(*res)
 
 
 def get_links(word):
