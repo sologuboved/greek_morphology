@@ -1,7 +1,8 @@
+from global_vars import NOT_FOUND, MISSING_WORDS_TXT
 from cooljugator_globals import COOLJUGATOR_SLICES
 
 
-def process_verb_output(res, minimalistic):
+def get_verb(res, minimalistic):
     if minimalistic:
         return "{} - {} - {}\n<i>{}</i>".format(*res)
     return "\n\n".join(
@@ -9,7 +10,14 @@ def process_verb_output(res, minimalistic):
     )
 
 
-def get_links(word):
-    return 'https://www.wordreference.com/gren/{}\n\n' \
-           'https://el.wiktionary.org/wiki/{}\n\n' \
-           'https://en.wiktionary.org/wiki/{}'.format(*[word] * 3)
+def get_missing_words(query):
+    try:
+        with open(MISSING_WORDS_TXT) as handler:
+            lines = handler.readlines()
+            try:
+                start = int(query)
+            except (ValueError, TypeError):
+                start = 0
+            return ''.join(lines[-start:]).strip()
+    except FileNotFoundError:
+        return NOT_FOUND
