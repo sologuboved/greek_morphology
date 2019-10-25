@@ -1,3 +1,4 @@
+from telegram import ParseMode
 from global_vars import NO_VERB, NOT_FOUND
 from helpers import log_missing
 from output_processor import process_verb_output
@@ -16,4 +17,4 @@ def process_verb_query(bot, update, query, minimalistic):
             reply = NOT_FOUND
         else:
             reply = process_verb_output(res, minimalistic)
-    bot.send_message(chat_id=update.message.chat_id, text=reply)
+    bot.send_message(chat_id=update.message.chat_id, text=reply, parse_mode=ParseMode.HTML)
