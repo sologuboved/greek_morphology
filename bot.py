@@ -27,7 +27,7 @@ def send_links(bot, update):
 
 
 def main():
-    updater = Updater(token=TOKEN)
+    updater = Updater(token=TOKEN, use_context=True)
     dispatcher = updater.dispatcher
     start_handler = CommandHandler('start', start)
     verb_handler = CommandHandler('v', send_minimalistic_verb)
