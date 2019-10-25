@@ -39,3 +39,9 @@ COOLJUGATOR_FIELDNAMES = [
     PASTIMPERFECT1, PASTIMPERFECT2, PASTIMPERFECT3, PASTIMPERFECT4, PASTIMPERFECT5, PASTIMPERFECT6,
     COMMANDIMPERFECT2, COMMANDIMPERFECT4, COMMANDPERFECT2, COMMANDPERFECT4
 ]
+
+COOLJUGATOR_SLICES = {'Present': slice(0, 6),
+                      'Future': slice(6, 12),
+                      'Aorist': slice(12, 18),
+                      'Imperfect': slice(18, 24),
+                      "Imperfective Imperative": slice(24, 26), 'Perfective Imperative': slice(26, 28)}
