@@ -5,9 +5,9 @@ from output_processor import process_verb_output
 from query_generator import look_up_verb
 
 
-def process_verb_query(bot, update, query, minimalistic):
+def process_verb_query(context, update, minimalistic):
     try:
-        query = query[1].strip()
+        query = update['message']['text'].split()[1].strip()
     except IndexError:
         reply = NO_VERB
     else:
@@ -17,4 +17,4 @@ def process_verb_query(bot, update, query, minimalistic):
             reply = NOT_FOUND
         else:
             reply = process_verb_output(res, minimalistic)
-    bot.send_message(chat_id=update.message.chat_id, text=reply, parse_mode=ParseMode.HTML)
+    context.bot.send_message(chat_id=update.message.chat_id, text=reply, parse_mode=ParseMode.HTML)

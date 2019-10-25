@@ -10,13 +10,11 @@ def start(update, context):
 
 
 def send_minimalistic_verb(update, context):
-    query = update['message']['text'].split()
-    process_verb_query(context.bot, update, query, minimalistic=True)
+    process_verb_query(context, update, minimalistic=True)
 
 
 def send_verb_paradigm(update, context):
-    query = update['message']['text'].split()
-    process_verb_query(context.bot, update, query, minimalistic=False)
+    process_verb_query(context, update, minimalistic=False)
 
 
 def send_links(update, context):
