@@ -6,7 +6,8 @@ def get_verb(res, minimalistic):
     if minimalistic:
         return "{} - {} - {}\n<i>{}</i>".format(*res)
     return "\n\n".join(
-        ["<b>{}:</b>\n{}".format(label, ", ".join(res[tense])) for label, tense in COOLJUGATOR_SLICES]
+        ["<b>{}:</b>\n{}".format(label,
+                                 ", ".join(filter(lambda x: x, res[tense]))) for label, tense in COOLJUGATOR_SLICES]
     )
 
 
