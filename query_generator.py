@@ -6,7 +6,7 @@ def look_up_verb(verb, minimalistic=True, db_name=DB_NAME, coll_name=VERBS):
     coll = MongoClient(LOCALHOST, PORT)[db_name][coll_name]
     for guess in guess_stress(verb):
         try:
-            res = coll.find({VERB: guess})[0]
+            res = coll.find({PARADIGM: guess})[0]
         except IndexError:
             continue
         if minimalistic:
