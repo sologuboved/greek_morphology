@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 COOLJUGATOR_LIST_JSON = 'cooljugator_list.json'
 RAW_COOLJUGATOR_PARADIGM_JSON = 'raw_cooljugator_paradigm.json'
 COOLJUGATOR_PARADIGM_JSON = 'cooljugator_paradigm.json'
@@ -40,8 +42,11 @@ COOLJUGATOR_FIELDNAMES = [
     COMMANDIMPERFECT2, COMMANDIMPERFECT4, COMMANDPERFECT2, COMMANDPERFECT4
 ]
 
-COOLJUGATOR_SLICES = {'Present': slice(0, 6),
-                      'Future': slice(6, 12),
-                      'Aorist': slice(12, 18),
-                      'Imperfect': slice(18, 24),
-                      "Imperfective Imperative": slice(24, 26), 'Perfective Imperative': slice(26, 28)}
+COOLJUGATOR_SLICES = OrderedDict(
+    [('Present', slice(0, 6)),
+     ('Future', slice(6, 12)),
+     ('Aorist', slice(12, 18)),
+     ('Imperfect', slice(18, 24)),
+     ("Imperfective Imperative", slice(24, 26)),
+     ('Perfective Imperative', slice(26, 28))]
+)
