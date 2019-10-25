@@ -5,6 +5,7 @@ import sys
 import re
 from functools import wraps
 from pymongo import ASCENDING
+from global_vars import MISSING_WORDS_TXT
 
 
 def which_watch(func):
@@ -69,7 +70,8 @@ def add_indices(target, indices):
 
 
 def log_missing(word):
-    pass
+    with open('{}.txt'.format(MISSING_WORDS_TXT), 'a') as handler:
+        handler.write('{}\n'.format(word))
 
 
 def get_base_dir():
