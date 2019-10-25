@@ -35,5 +35,6 @@ def copy_collection(target_collname, dbname=DB_NAME, source_collname=VERBS, indi
 
 
 if __name__ == '__main__':
+    # upload(drop=True)
     copy_collection(target_collname=VERBS + '_backup')
 
