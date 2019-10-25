@@ -11,7 +11,7 @@ def look_up_verb(verb, minimalistic=True, db_name=DB_NAME, coll_name=VERBS):
             continue
         if minimalistic:
             return res[VERB], res[AORIST], res[FUTURUM], res[TRANSL]
-        return res[VERB], res[TRANSL], res[PARADIGM]
+        return res[PARADIGM]
 
 
 def guess_stress(verb):
