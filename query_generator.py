@@ -41,6 +41,4 @@ if __name__ == '__main__':
     #     for res in guess_stress(v):
     #         print(res)
     #     print()
-
     pass
-
