@@ -70,7 +70,7 @@ def add_indices(target, indices):
 
 
 def log_missing(word):
-    with open('{}.txt'.format(MISSING_WORDS_TXT), 'a') as handler:
+    with open(MISSING_WORDS_TXT, 'a') as handler:
         handler.write('{}\n'.format(word))
 
 
