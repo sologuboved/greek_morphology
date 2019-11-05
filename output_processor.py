@@ -5,6 +5,8 @@ from cooljugator_globals import COOLJUGATOR_SLICES, FUTURE
 def get_verb(res, minimalistic):
     if minimalistic:
         return "{} - {} - {}\n<i>{}</i>".format(*res)
+    if not res:
+        return "Paradigm unknown"
     paradigm = list()
     for label, tense in COOLJUGATOR_SLICES:
         if label == FUTURE:
