@@ -42,11 +42,18 @@ def get_paradigm(verb):
     verb = BeautifulSoup(requests.get('https://cooljugator.com/gr/' + verb).content, 'lxml')
     for fieldname in paradigm:
         try:
-            paradigm[fieldname] = verb.find('div', {'class': 'conjugation-cell', 'id': fieldname}).attrs['data-default']
+            fieldcontent = verb.find('div', {'class': 'conjugation-cell', 'id': fieldname}).attrs['data-default']
         except AttributeError:
             pass
         except Exception as e:
             errors.append((fieldname, type(e), str(e)))
+        else:
+            if fieldname.startswith('f'):
+                try:
+                    fieldcontent = fieldcontent.split()[1]
+                except (IndexError, AttributeError):
+                    pass
+            paradigm[fieldname] = fieldcontent
     return paradigm, errors
 
 
