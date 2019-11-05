@@ -40,9 +40,11 @@ COOLJUGATOR_FIELDNAMES = [
     COMMANDIMPERFECT2, COMMANDIMPERFECT4, COMMANDPERFECT2, COMMANDPERFECT4
 ]
 
+FUTURE = 'future'
+
 COOLJUGATOR_SLICES = (
     ('Present', slice(0, 6)),
-    ('Future', slice(6, 12)),
+    (FUTURE, slice(6, 12)),
     ('Aorist', slice(12, 18)),
     ('Imperfect', slice(18, 24)),
     ("Imperfective Imperative", slice(24, 26)),
