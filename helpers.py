@@ -20,7 +20,7 @@ def which_watch(func):
     return wrapper
 
 
-def counter(total):
+def counter(total='?'):
     count = 0
     while True:
         count += 1
