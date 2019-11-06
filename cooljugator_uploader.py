@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from cooljugator_globals import COOLJUGATOR_PARADIGM_JSON
-from global_vars import *
+from global_vars import DB_NAME, VERBS, VERB, PARADIGM, LOCALHOST, PORT
 from helpers import which_watch, counter, read_json_lines
 from coll_operations import add_indices
 
