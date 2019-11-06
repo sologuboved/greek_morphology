@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from cooljugator_globals import COOLJUGATOR_PARADIGM_JSON
+from wikilexico_globals import WIKILEXICO_PARADIGM_JSON
 from global_vars import *
 from helpers import which_watch, counter, read_json_lines
 from coll_operations import add_indices
@@ -7,7 +7,7 @@ from coll_operations import add_indices
 
 @which_watch
 def upload(db_name=DB_NAME, coll_name=VERBS,
-           drop=False, source_json=COOLJUGATOR_PARADIGM_JSON, indices=(VERB, PARADIGM)):
+           drop=False, source_json=WIKILEXICO_PARADIGM_JSON, indices=(VERB, PARADIGM)):
     target = MongoClient(LOCALHOST, PORT)[db_name][coll_name]
     if drop:
         target.drop()
