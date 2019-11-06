@@ -1,0 +1,3 @@
+from wikilexico_globals import FILTERED_WIKILEXICO_LIST_JSON
+
+
