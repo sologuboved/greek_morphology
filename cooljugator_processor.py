@@ -14,7 +14,7 @@ def process_paradigms(final_paradigm_json, raw_paradigm_json=RAW_COOLJUGATOR_PAR
 
 def process_line(line):
     return {VERB: line[VERB], TRANSL: line[TRANSL],
-            FUTURUM: line[FUTURE1], AORIST: line[PASTPERFECT1],
+            FUTURUM: "θα {}".format(line[FUTURE1]), AORIST: line[PASTPERFECT1],
             PARADIGM: [line[fieldname] if line[fieldname] else None for fieldname in COOLJUGATOR_FIELDNAMES]}
 
 
