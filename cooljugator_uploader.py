@@ -19,22 +19,5 @@ def upload(db_name=DB_NAME, coll_name=VERBS,
     print('\nCurrently,', target.count(), 'entries')
 
 
-@which_watch
-def copy_collection(target_collname, dbname=DB_NAME, source_collname=VERBS, indices=(VERB, PARADIGM)):
-    print("[{}]: copying [{}] to [{}]...".format(dbname, source_collname, target_collname))
-    assert target_collname != source_collname, "Collections should not have identical names"
-    database = MongoClient(LOCALHOST, PORT)[dbname]
-    target_coll = database[target_collname]
-    target_coll.drop()
-    source_coll = database[source_collname]
-    count = counter(source_coll.count())
-    for entry in source_coll.find():
-        next(count)
-        target_coll.insert(entry)
-    add_indices(target_coll, indices)
-
-
 if __name__ == '__main__':
-    # upload(drop=True)
-    copy_collection(target_collname=VERBS + '_backup')
-
+    upload(drop=True)

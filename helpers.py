@@ -4,8 +4,8 @@ import os
 import sys
 import re
 from functools import wraps
-from pymongo import ASCENDING
-from global_vars import MISSING_WORDS_TXT
+from pymongo import MongoClient, ASCENDING
+from global_vars import MISSING_WORDS_TXT, DB_NAME, VERBS, LOCALHOST, PORT, VERB, PARADIGM
 
 
 def which_watch(func):
@@ -74,6 +74,20 @@ def log_missing(word):
         handler.write('{}\n'.format(word))
 
 
+def copy_collection(target_collname, dbname=DB_NAME, source_collname=VERBS, indices=(VERB, PARADIGM)):
+    print("[{}]: copying [{}] to [{}]...".format(dbname, source_collname, target_collname))
+    assert target_collname != source_collname, "Collections should not have identical names"
+    database = MongoClient(LOCALHOST, PORT)[dbname]
+    target_coll = database[target_collname]
+    target_coll.drop()
+    source_coll = database[source_collname]
+    count = counter(source_coll.count())
+    for entry in source_coll.find():
+        next(count)
+        target_coll.insert(entry)
+    add_indices(target_coll, indices)
+
+
 def get_base_dir():
     return os.path.dirname(os.path.abspath(__file__))
 
@@ -106,3 +120,7 @@ def find_previous_pid(prefix):
     for fname in os.listdir(get_base_dir()):
         if re.fullmatch(r'{}_\d+\.pid'.format(prefix), fname):
             return get_abs_path(fname)
+
+
+if __name__ == '__main__':
+    copy_collection(target_collname=VERBS + '_backup')
