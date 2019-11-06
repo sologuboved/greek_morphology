@@ -91,6 +91,7 @@ def get_active_voice_paradigm(verb):
         columns = get_columns()
         present.append(de_bracket(columns[1]))
         imperfect.append(de_bracket(columns[2]))
+        imperative.append(de_bracket(columns[5]))
 
     index = 7
     pers3_pl = get_columns()
