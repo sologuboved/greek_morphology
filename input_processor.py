@@ -28,7 +28,7 @@ def process_verb_query(update, context, minimalistic):
     except IndexError:
         reply = NO_VERB
     else:
-        res = look_up_verb(query, minimalistic=minimalistic)
+        res = look_up_verb(query)
         if res is None:
             log_missing(query)
             reply = NOT_FOUND

@@ -2,16 +2,14 @@ from pymongo import MongoClient
 from global_vars import *
 
 
-def look_up_verb(verb, minimalistic=True, db_name=DB_NAME, coll_name=VERBS):
+def look_up_verb(verb, db_name=DB_NAME, coll_name=VERBS):
     coll = MongoClient(LOCALHOST, PORT)[db_name][coll_name]
     for guess in guess_stress(verb):
         try:
             res = coll.find({PARADIGM: guess})[0]
         except IndexError:
             continue
-        if minimalistic:
-            return res[VERB], res[AORIST], res[FUTURUM], res[TRANSL]
-        return res[PARADIGM]
+        return res
 
 
 def guess_stress(verb):
