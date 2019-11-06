@@ -55,9 +55,11 @@ def add_indices(target, indices):
 
 
 if __name__ == '__main__':
-    # from global_vars import SOURCE
-    # add_field(SOURCE, 'c')
+    # from global_vars import SOURCE, WIKILEXICO_VERBS
+    # add_field(SOURCE, 'w', collname=WIKILEXICO_VERBS)
     # from global_vars import FUTURUM
     # edit_field(FUTURUM, lambda x: "θα " + x if x else x)
     # copy_collection(target_collname=VERBS + '_backup')
+    # from global_vars import TRANSL, WIKILEXICO_VERBS
+    # edit_field(TRANSL, lambda x: str(), collname=WIKILEXICO_VERBS)
     ...
