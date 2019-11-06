@@ -8,7 +8,10 @@ def look_up_verb(verb, db_name=DB_NAME, coll_name=VERBS):
         try:
             res = coll.find({PARADIGM: guess})[0]
         except IndexError:
-            continue
+            try:
+                res = coll.find({PARADIGM: {'$elemMatch': {'$elemMatch': {'$in': [guess]}}}})[0]
+            except IndexError:
+                continue
         return res
 
 
