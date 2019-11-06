@@ -1,5 +1,5 @@
 COOLJUGATOR_LIST_JSON = 'cooljugator_list.json'
-RAW_COOLJUGATOR_PARADIGM_JSON = 'raw_cooljugator_paradigm.json'
+RAW_COOLJUGATOR_PARADIGM_JSON = 'cooljugator_paradigm_raw.json'
 COOLJUGATOR_PARADIGM_JSON = 'cooljugator_paradigm.json'
 
 INFINITIVE0 = 'infinitive0'
