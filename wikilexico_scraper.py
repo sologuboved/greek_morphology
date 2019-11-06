@@ -61,16 +61,7 @@ def collect_active_voice_paradigms(raw_paradigm_json, list_json=FILTERED_WIKILEX
 def get_active_voice_paradigm(verb):
 
     def get_columns():
-        try:
-            return rows[index].find_all('td')
-        except IndexError:
-            print()
-            print(index)
-            print(rows)
-            quit()
-
-    # def process(cell):
-    #     return cell.text.strip()
+        return rows[index].find_all('td')
 
     def de_br(cell):
         try:
@@ -122,12 +113,6 @@ def get_active_voice_paradigm(verb):
     aorist.append(de_br(pers3_pl[1]))
     raw_future.append(de_bracket(pers3_pl[2]))
 
-    # print(present)
-    # print(fix_future(raw_future))
-    # print(aorist)
-    # print(imperfect)
-    # print(list(filter(lambda v: v, imperative)))
-
     return list(itertools.chain(present,
                                 fix_future(raw_future),
                                 aorist,
@@ -159,7 +144,7 @@ def fix_future(raw_future):
 
 
 def get_shortened(paradigm):
-    return {VERB: paradigm[0], FUTURUM: "θα {}".format(paradigm[6]), AORIST: paradigm[12], TRANSL: None}
+    return {VERB: paradigm[0], FUTURUM: "θα {}".format(paradigm[6]), AORIST: paradigm[12], TRANSL: str()}
 
 
 if __name__ == '__main__':
