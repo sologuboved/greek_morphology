@@ -1,7 +1,8 @@
 from pymongo import MongoClient
 from cooljugator_globals import COOLJUGATOR_PARADIGM_JSON
 from global_vars import *
-from helpers import which_watch, add_indices, counter, read_json_lines
+from helpers import which_watch, counter, read_json_lines
+from coll_operations import add_indices
 
 
 @which_watch
