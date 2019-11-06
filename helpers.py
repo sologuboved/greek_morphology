@@ -5,7 +5,7 @@ import sys
 import re
 from functools import wraps
 from pymongo import MongoClient, ASCENDING
-from global_vars import MISSING_WORDS_TXT, DB_NAME, VERBS, LOCALHOST, PORT, VERB, PARADIGM
+from global_vars import MISSING_WORDS_TXT, DB_NAME, VERBS, LOCALHOST, PORT, VERB, PARADIGM, SOURCE
 
 
 def which_watch(func):
@@ -88,6 +88,20 @@ def copy_collection(target_collname, dbname=DB_NAME, source_collname=VERBS, indi
     add_indices(target_coll, indices)
 
 
+def add_field(fieldname, fieldcontent, fltr=None, dbname=DB_NAME, collname=VERBS):
+    if not fltr:
+        fltr = dict()
+    print("{}.{}: setting '{}' to \"{}\"...".format(dbname, collname, fieldname, fieldcontent))
+    target = MongoClient(LOCALHOST, PORT)[dbname][collname]
+    cursor = target.find(fltr)
+    count = counter(cursor.count())
+    for entry in cursor:
+        next(count)
+        entry[fieldname] = fieldcontent
+        target.save(entry)
+    print()
+
+
 def get_base_dir():
     return os.path.dirname(os.path.abspath(__file__))
 
@@ -123,4 +137,5 @@ def find_previous_pid(prefix):
 
 
 if __name__ == '__main__':
+    add_field(SOURCE, 'c')
     copy_collection(target_collname=VERBS + '_backup')

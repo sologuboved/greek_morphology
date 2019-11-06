@@ -7,6 +7,7 @@ TRANSL = 'eng'
 FUTURUM = 'futurum'
 AORIST = 'aorist'
 PARADIGM = 'paradigm'
+SOURCE = 'source'
 DIACRITICS = {
     'α': ('ά',),
     'ε': ('έ',),
