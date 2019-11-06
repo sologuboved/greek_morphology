@@ -1,5 +1,5 @@
 from pymongo import MongoClient, ASCENDING
-from global_vars import DB_NAME, VERBS, LOCALHOST, PORT, VERB, PARADIGM, SOURCE
+from global_vars import DB_NAME, VERBS, LOCALHOST, PORT, VERB, PARADIGM
 from helpers import counter
 
 
@@ -31,6 +31,20 @@ def add_field(fieldname, fieldcontent, fltr=None, dbname=DB_NAME, collname=VERBS
     print()
 
 
+def edit_field(fieldname, func, fltr=None, dbname=DB_NAME, collname=VERBS):
+    if not fltr:
+        fltr = dict()
+    print("{}.{}: editing '{}' with '{}'...".format(dbname, collname, fieldname, func.__name__))
+    target = MongoClient(LOCALHOST, PORT)[dbname][collname]
+    cursor = target.find(fltr)
+    count = counter(cursor.count())
+    for entry in cursor:
+        next(count)
+        entry[fieldname] = func(entry.get(fieldname))
+        target.save(entry)
+    print()
+
+
 def add_indices(target, indices):
     print("\nIndexing...")
     for indx in indices:
@@ -41,5 +55,9 @@ def add_indices(target, indices):
 
 
 if __name__ == '__main__':
-    add_field(SOURCE, 'c')
-    copy_collection(target_collname=VERBS + '_backup')
+    # from global_vars import SOURCE
+    # add_field(SOURCE, 'c')
+    # from global_vars import FUTURUM
+    # edit_field(FUTURUM, lambda x: "θα " + x if x else x)
+    # copy_collection(target_collname=VERBS + '_backup')
+    ...
