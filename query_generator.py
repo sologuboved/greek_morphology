@@ -3,6 +3,7 @@ from global_vars import *
 
 
 def look_up_verb(verb, db_name=DB_NAME, coll_name=VERBS):
+    verb = verb.lower()
     coll = MongoClient(LOCALHOST, PORT)[db_name][coll_name]
     for guess in guess_stress(verb):
         try:
