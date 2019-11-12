@@ -83,7 +83,7 @@ def get_active_voice_paradigm(verb):
     imperfect = list()
     imperative = list()
 
-    rows = get_rows(verb)
+    rows = get_active_voice_rows(verb)
     if not rows:
         return
 
@@ -121,7 +121,7 @@ def get_active_voice_paradigm(verb):
                                 list(filter(lambda v: v, imperative))))
 
 
-def get_rows(verb):
+def get_active_voice_rows(verb):
     verb = BeautifulSoup(requests.get('https://el.wiktionary.org/wiki/' + verb).content, 'lxml')
     if not verb.find('span', {'class': 'inflexions'}):
         return
@@ -153,4 +153,4 @@ if __name__ == '__main__':
     # filter_verbs(FILTERED_WIKILEXICO_LIST_JSON)
     collect_active_voice_paradigms(WIKILEXICO_PARADIGM_JSON)
     # print(get_active_voice_paradigm('αγανοϋφαίνω'))
-    # get_rows('αγανοϋφαίνω')
+    # get_active_voice_rows('αγανοϋφαίνω')

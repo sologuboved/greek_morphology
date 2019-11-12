@@ -23,7 +23,7 @@ if __name__ == '__main__':
     # from cooljugator_globals import COOLJUGATOR_PARADIGM_JSON
     # upload(COOLJUGATOR_PARADIGM_JSON, 'c', drop=True)
 
-    # from global_vars import WIKILEXICO_VERBS
+    # from global_vars import WIKILEXICO_ACT_VERBS
     # from wikilexico_globals import WIKILEXICO_PARADIGM_JSON
     # upload(WIKILEXICO_PARADIGM_JSON, 'w')
     ...
