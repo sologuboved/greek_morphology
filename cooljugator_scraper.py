@@ -8,7 +8,7 @@ from helpers import which_watch, dump_utf_json, load_utf_json, counter, write_js
 @which_watch
 def collect_verbs(list_json=COOLJUGATOR_LIST_JSON):
     dump_utf_json(
-        [list(map(lambda v: v.strip(), verb.text.split('-', 1))) for verb in BeautifulSoup(
+        [list(map(str.strip, verb.text.split('-', 1))) for verb in BeautifulSoup(
             requests.get('https://cooljugator.com/gr/list/all').content, 'lxml').find_all('li', {'class': 'item'})],
         list_json
     )

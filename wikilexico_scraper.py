@@ -70,7 +70,7 @@ def get_active_voice_paradigm(verb):
             return de_bracket(cell)
 
     def de_bracket(cell):
-        splitted = list(map(lambda v: v.strip(), cell.text.split('(')[0].split(" - ")))
+        splitted = list(map(str.strip, cell.text.split('(')[0].split(" - ")))
         if len(splitted) == 1:
             return splitted[0]
         else:
