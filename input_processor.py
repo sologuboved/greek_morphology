@@ -49,6 +49,7 @@ def process_missing_words_query(update, context):
 
 def process_links_query(update):
     word = update.message.text
-    update.message.reply_text('https://www.wordreference.com/gren/{}\n\n'
-                              'https://el.wiktionary.org/wiki/{}\n\n'
-                              'https://en.wiktionary.org/wiki/{}'.format(*[word] * 3))
+    update.message.reply_text('https://www.wordreference.com/gren/{word}\n\n'
+                              'https://el.wiktionary.org/wiki/{word}\n\n'
+                              'https://en.wiktionary.org/wiki/{word}\n\n'
+                              'https://www.lexigram.gr/lex/newg/{word}'.format(word=word))
