@@ -76,7 +76,7 @@ def collect_duplicates():
 
 
 @which_watch
-def merge_entries():
+def remove_duplicates():
 
     def delete_except(good_entry):
         coll.delete_many({VERB: verb, '_id': {'$ne': ObjectId(good_entry['_id'])}})
@@ -143,5 +143,5 @@ if __name__ == '__main__':
     # fix_do_transls()
     # clean_do()
     # collect_duplicates()
-    # merge_entries()
+    # remove_duplicates()
     remove_morphologically_abnormal_verbs()
