@@ -2,9 +2,11 @@ import re
 import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 from global_vars import LOCALHOST, PORT, DB_NAME, VERBS, VERB, TRANSL
 from cooljugator_globals import COOLJUGATOR_DO_TRANSL
 from helpers import dump_utf_json, load_utf_json, counter, which_watch
+from coll_operations import stringify
 
 
 DO_JSON = 'do.json'
@@ -73,9 +75,61 @@ def collect_duplicates():
     dump_utf_json(sorted(list(duplicates)), DUPLICATES_JSON)
 
 
+@which_watch
+def merge_entries():
+
+    def delete_except(good_entry):
+        coll.delete_many({VERB: verb, '_id': {'$ne': ObjectId(good_entry['_id'])}})
+
+    merge_count = translationless_count = identical_count = 0
+    abnormal = set()
+    coll = MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS]
+    for verb in load_utf_json(DUPLICATES_JSON):
+        match = coll.find({VERB: verb})
+        translated = biformed = silly = None
+        for entry in match:
+            if isinstance(entry[VERB], list):
+                biformed = entry
+            elif entry[TRANSL]:
+                translated = entry
+            else:
+                silly = entry
+        if biformed and translated:
+            biformed[TRANSL] = translated[TRANSL]
+            coll.save(biformed)
+            delete_except(biformed)
+            merge_count += 1
+        elif translated:
+            delete_except(translated)
+            translationless_count += 1
+        elif biformed:
+            delete_except(biformed)
+            identical_count += 1
+        elif silly:
+            delete_except(silly)
+            identical_count += 1
+        else:
+            abnormal.add(verb)
+    print("Merged {} entries. "
+          "Deleted translationless duplicates {} times, "
+          "identical duplicates {} times.".format(merge_count, translationless_count, identical_count))
+    if abnormal:
+        print("Abnormal duplicates ({}):".format(len(abnormal)))
+        for duplicate in abnormal:
+            print(duplicate)
+    else:
+        print("No further abnormalities")
+
+
+def is_morphologically_abnormal_verb(entry):
+    verb = stringify(entry[VERB])
+    return not (verb.endswith('ω') or verb.endswith('ώ') or verb.endswith('αι'))
+
+
 if __name__ == '__main__':
     # collect_do()
     # collect_do_transls()
     # fix_do_transls()
     # clean_do()
-    collect_duplicates()
+    # collect_duplicates()
+    merge_entries()
