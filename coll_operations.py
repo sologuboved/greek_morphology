@@ -79,11 +79,6 @@ def stringify(fieldcontent):
         return " / ".join(fieldcontent)
 
 
-def is_abnormal_verb(entry):
-    verb = stringify(entry[VERB])
-    return not (verb.endswith('ω') or verb.endswith('ώ') or verb.endswith('αι'))
-
-
 if __name__ == '__main__':
     # from global_vars import SOURCE, WIKILEXICO_ACT_VERBS
     # add_field(SOURCE, 'w', collname=WIKILEXICO_ACT_VERBS)
@@ -92,5 +87,5 @@ if __name__ == '__main__':
     # copy_collection(target_collname=VERBS + '_backup')
     # from global_vars import TRANSL, WIKILEXICO_ACT_VERBS
     # edit_field(TRANSL, lambda x: str(), collname=WIKILEXICO_ACT_VERBS)
-    print_verbs(VERB, {SOURCE: 'c'}, is_abnormal_verb)
+    # print_verbs(VERB, {SOURCE: 'c'}, is_abnormal_verb)
     ...
