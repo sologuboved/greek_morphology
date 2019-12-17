@@ -2,7 +2,8 @@ import re
 import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
-from global_vars import LOCALHOST, PORT, DB_NAME, VERBS, VERB, TRANSL, COOLJUGATOR_DO_TRANSL
+from global_vars import LOCALHOST, PORT, DB_NAME, VERBS, VERB, TRANSL
+from cooljugator_globals import COOLJUGATOR_DO_TRANSL
 from helpers import dump_utf_json, load_utf_json, counter, which_watch
 
 
@@ -45,6 +46,6 @@ def fix_transls():
 
 
 if __name__ == '__main__':
-    # collect_do()
+    collect_do()
     # collect_transls()
-    fix_transls()
+    # fix_transls()

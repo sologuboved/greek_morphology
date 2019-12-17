@@ -1,6 +1,7 @@
 COOLJUGATOR_LIST_JSON = 'cooljugator_list.json'
 RAW_COOLJUGATOR_PARADIGM_JSON = 'cooljugator_paradigm_raw.json'
 COOLJUGATOR_PARADIGM_JSON = 'cooljugator_paradigm.json'
+COOLJUGATOR_DO_TRANSL = 'cooljugator_do_transl.json'
 
 INFINITIVE0 = 'infinitive0'
 COMMANDIMPERFECT2 = 'commandimperfect2'
