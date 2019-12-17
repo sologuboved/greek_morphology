@@ -16,7 +16,7 @@ def collect_do():
 
 
 @which_watch
-def collect_transls():
+def collect_do_transls():
     pattern = re.compile(r'\((.+?)\)')
     doed = load_utf_json(DO_JSON)
     transls = dict()
@@ -33,7 +33,7 @@ def collect_transls():
 
 
 @which_watch
-def fix_transls():
+def fix_do_transls():
     coll = MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS]
     transls = load_utf_json(DO_JSON).items()
     count = counter(len(transls))
@@ -45,7 +45,7 @@ def fix_transls():
     print()
 
 
-def clean():
+def clean_do():
     coll = MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS]
     for entry in coll.find({VERB: {'$ne': 'κάνω'}, TRANSL: 'do'}):
         entry[TRANSL] = str()
@@ -54,6 +54,6 @@ def clean():
 
 if __name__ == '__main__':
     collect_do()
-    # collect_transls()
-    # fix_transls()
-    # clean()
+    # collect_do_transls()
+    # fix_do_transls()
+    # clean_do()
