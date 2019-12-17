@@ -45,7 +45,15 @@ def fix_transls():
     print()
 
 
+def clean():
+    coll = MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS]
+    for entry in coll.find({VERB: {'$ne': 'κάνω'}, TRANSL: 'do'}):
+        entry[TRANSL] = str()
+        coll.save(entry)
+
+
 if __name__ == '__main__':
     collect_do()
     # collect_transls()
     # fix_transls()
+    # clean()
