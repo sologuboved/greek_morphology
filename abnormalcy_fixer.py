@@ -8,6 +8,7 @@ from helpers import dump_utf_json, load_utf_json, counter, which_watch
 
 
 DO_JSON = 'do.json'
+DUPLICATES_JSON = 'duplicates.json'
 
 
 def collect_do():
@@ -52,8 +53,29 @@ def clean_do():
         coll.save(entry)
 
 
+@which_watch
+def collect_duplicates():
+    visited = set()
+    duplicates = set()
+    coll = MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS]
+    count = counter(coll.count())
+    for entry in coll.find():
+        next(count)
+        verbs = entry[VERB]
+        if isinstance(verbs, str):
+            verbs = [verbs]
+        for verb in verbs:
+            if verb in visited:
+                duplicates.add(verb)
+            else:
+                visited.add(verb)
+    print("\nDumping {} duplicates".format(len(duplicates)))
+    dump_utf_json(sorted(list(duplicates)), DUPLICATES_JSON)
+
+
 if __name__ == '__main__':
-    collect_do()
+    # collect_do()
     # collect_do_transls()
     # fix_do_transls()
     # clean_do()
+    collect_duplicates()
