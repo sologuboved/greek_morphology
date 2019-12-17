@@ -6,11 +6,11 @@ from bson.objectid import ObjectId
 from global_vars import LOCALHOST, PORT, DB_NAME, VERBS, VERB, TRANSL
 from cooljugator_globals import COOLJUGATOR_DO_TRANSL
 from helpers import dump_utf_json, load_utf_json, counter, which_watch
-from coll_operations import stringify
 
 
 DO_JSON = 'do.json'
 DUPLICATES_JSON = 'duplicates.json'
+MORPH_ANOMALIES_JSON = 'morph_anomalies.json'
 
 
 def collect_do():
@@ -121,9 +121,20 @@ def merge_entries():
         print("No further abnormalities")
 
 
-def is_morphologically_abnormal_verb(entry):
-    verb = stringify(entry[VERB])
-    return not (verb.endswith('ω') or verb.endswith('ώ') or verb.endswith('αι'))
+def remove_morphologically_abnormal_verbs():
+    abnormal_count = 0
+    coll = MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS]
+    count = counter(coll.count())
+    for entry in coll.find():
+        next(count)
+        verbs = entry[VERB]
+        if isinstance(verbs, str):
+            verbs = [verbs]
+        for verb in verbs:
+            if not (verb.endswith('ω') or verb.endswith('ώ') or verb.endswith('αι')):
+                coll.delete_one({VERB: verb})
+                abnormal_count += 1
+    print("\nRemoved {} abnormal verbs".format(abnormal_count))
 
 
 if __name__ == '__main__':
@@ -132,4 +143,5 @@ if __name__ == '__main__':
     # fix_do_transls()
     # clean_do()
     # collect_duplicates()
-    merge_entries()
+    # merge_entries()
+    remove_morphologically_abnormal_verbs()
