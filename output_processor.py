@@ -2,7 +2,7 @@ from global_vars import NOT_FOUND, MISSING_WORDS_TXT, VERB, AORIST, FUTURUM, TRA
 from cooljugator_globals import COOLJUGATOR_SLICES, FUTURE
 
 
-def get_verb(res, minimalistic):
+def get_verb(res, minimalistic, appendix=False):
     def process_sequence(raw_seq):
         seq = list()
         for item in raw_seq:
@@ -13,7 +13,14 @@ def get_verb(res, minimalistic):
         return seq
 
     def get_minimalistic():
-        return "{} - {} - {}\n<i>{}</i>".format(*process_sequence([res[VERB], res[AORIST], res[FUTURUM], res[TRANSL]]))
+        if appendix:
+            separator = " | "
+            newline = '\n\n'
+        else:
+            separator = '\n'
+            newline = str()
+        verb, aorist, futurum, transl = process_sequence([res[VERB], res[AORIST], res[FUTURUM], res[TRANSL]])
+        return "{}{} - {} - {}{}<i>{}</i>".format(newline, verb, aorist, futurum, separator, transl)
 
     def get_tense():
         return process_sequence(filter(lambda x: x, res[tense]))

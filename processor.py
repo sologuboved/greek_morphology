@@ -54,7 +54,7 @@ def process_links_query(update):
     if paradigm is None:
         paradigm = str()
     else:
-        paradigm = '\n\n' + get_verb(paradigm, minimalistic=True)
+        paradigm = get_verb(paradigm, minimalistic=True, appendix=True)
     update.message.reply_text(
         'https://www.wordreference.com/gren/{word}\n\n'
         'https://el.wiktionary.org/wiki/{word}\n\n'
