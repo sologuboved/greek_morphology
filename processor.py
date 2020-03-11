@@ -29,12 +29,12 @@ def process_verb_query(update, context, minimalistic):
     except IndexError:
         reply = NO_VERB
     else:
-        res = look_up_verb(query)
-        if res is None:
+        paradigm = look_up_verb(query)
+        if paradigm is None:
             log_missing(query)
             reply = NOT_FOUND
         else:
-            reply = get_verb(res, minimalistic)
+            reply = get_verb(paradigm, minimalistic)
     context.bot.send_message(chat_id=update.message.chat_id, text=reply, parse_mode=ParseMode.HTML)
 
 
