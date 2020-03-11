@@ -52,3 +52,10 @@ def get_missing_words(query):
             return ''.join(lines[-start:]).strip()
     except FileNotFoundError:
         return NOT_FOUND
+
+
+def get_fem_nom_pl(res):
+    if res is None:
+        return str()
+    else:
+        return "\n\n<i>Nominativus pluralis:</i> " + res
