@@ -50,11 +50,17 @@ def process_missing_words_query(update, context):
 
 def process_links_query(update):
     word = update.message.text
+    paradigm = look_up_verb(word)
+    if paradigm is None:
+        paradigm = str()
+    else:
+        paradigm = '\n\n' + get_verb(paradigm, minimalistic=True)
     update.message.reply_text(
         'https://www.wordreference.com/gren/{0}\n\n'
         'https://el.wiktionary.org/wiki/{0}\n\n'
         'https://en.wiktionary.org/wiki/{0}\n\n'
         'https://www.lexigram.gr/lex/newg/{0}\n\n'
-        'https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={1}'.format(word, quote(word)),
-        disable_web_page_preview=True
+        'https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={1}'
+        '{2}'.format(word, quote(word), paradigm),
+        disable_web_page_preview=True, parse_mode=ParseMode.HTML
     )
