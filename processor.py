@@ -2,8 +2,8 @@ from urllib.parse import quote
 from telegram import ParseMode
 from global_vars import NO_VERB, NOT_FOUND
 from helpers import log_missing
-from output_processor import get_verb, get_missing_words
-from query_generator import look_up_verb
+from output_processor import get_verb, get_missing_words, get_fem_nom_pl
+from query_generator import look_up_verb, look_up_fem_nom_pl
 
 
 def process_start_query(update, context):
@@ -50,6 +50,11 @@ def process_missing_words_query(update, context):
 
 def process_links_query(update):
     word = update.message.text
+    try:
+        fem_nom_pl = get_fem_nom_pl(look_up_fem_nom_pl(word))
+    except Exception as e:
+        print(e)
+        fem_nom_pl = str()
     paradigm = look_up_verb(word)
     if paradigm is None:
         paradigm = str()
@@ -61,6 +66,7 @@ def process_links_query(update):
         'https://en.wiktionary.org/wiki/{word}\n\n'
         'https://www.lexigram.gr/lex/newg/{word}\n\n'
         'https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={encoded_word}'
-        '{paradigm}'.format(word=word, encoded_word=quote(word), paradigm=paradigm),
+        '{fem_nom_pl}'
+        '{paradigm}'.format(word=word, encoded_word=quote(word), fem_nom_pl=fem_nom_pl, paradigm=paradigm),
         disable_web_page_preview=True, parse_mode=ParseMode.HTML
     )
