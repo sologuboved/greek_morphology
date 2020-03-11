@@ -36,7 +36,7 @@ def guess_stress(verb):
     return guesses
 
 
-def obtain_fem_nom_pl(noun):
+def look_up_fem_nom_pl(noun):
     if noun.endswith('η') or noun.endswith('ή'):
         try:
             return BeautifulSoup(
@@ -51,5 +51,5 @@ if __name__ == '__main__':
     #     for res in guess_stress(v):
     #         print(res)
     #     print()
-    # print(obtain_fem_nom_pl('επιτροπή'))
+    # print(look_up_fem_nom_pl('επιτροπή'))
     pass
