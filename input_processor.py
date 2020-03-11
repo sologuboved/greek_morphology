@@ -1,3 +1,4 @@
+from urllib.parse import quote
 from telegram import ParseMode
 from global_vars import NO_VERB, NOT_FOUND
 from helpers import log_missing
@@ -49,7 +50,10 @@ def process_missing_words_query(update, context):
 
 def process_links_query(update):
     word = update.message.text
-    update.message.reply_text('https://www.wordreference.com/gren/{0}\n\n'
-                              'https://el.wiktionary.org/wiki/{0}\n\n'
-                              'https://en.wiktionary.org/wiki/{0}\n\n'
-                              'https://www.lexigram.gr/lex/newg/{0}'.format(word))
+    update.message.reply_text(
+        'https://www.wordreference.com/gren/{0}\n\n'
+        'https://el.wiktionary.org/wiki/{0}\n\n'
+        'https://en.wiktionary.org/wiki/{0}\n\n'
+        'https://www.lexigram.gr/lex/newg/{0}\n\n'
+        'https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={1}'.format(word, quote(word))
+    )
