@@ -56,11 +56,11 @@ def process_links_query(update):
     else:
         paradigm = '\n\n' + get_verb(paradigm, minimalistic=True)
     update.message.reply_text(
-        'https://www.wordreference.com/gren/{0}\n\n'
-        'https://el.wiktionary.org/wiki/{0}\n\n'
-        'https://en.wiktionary.org/wiki/{0}\n\n'
-        'https://www.lexigram.gr/lex/newg/{0}\n\n'
-        'https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={1}'
-        '{2}'.format(word, quote(word), paradigm),
+        'https://www.wordreference.com/gren/{word}\n\n'
+        'https://el.wiktionary.org/wiki/{word}\n\n'
+        'https://en.wiktionary.org/wiki/{word}\n\n'
+        'https://www.lexigram.gr/lex/newg/{word}\n\n'
+        'https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={encoded_word}'
+        '{paradigm}'.format(word=word, encoded_word=quote(word), paradigm=paradigm),
         disable_web_page_preview=True, parse_mode=ParseMode.HTML
     )
