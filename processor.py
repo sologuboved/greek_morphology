@@ -65,7 +65,8 @@ def process_links_query(update):
         'https://el.wiktionary.org/wiki/{word}\n\n'
         'https://en.wiktionary.org/wiki/{word}\n\n'
         'https://www.lexigram.gr/lex/newg/{word}\n\n'
-        'https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={encoded_word}'
+        'https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={encoded_word}\n\n'
+        'https://www.multitran.com/m.exe?l1=1&l2=38&s={word}'
         '{fem_nom_pl}'
         '{paradigm}'.format(word=word, encoded_word=quote(word), fem_nom_pl=fem_nom_pl, paradigm=paradigm),
         disable_web_page_preview=True, parse_mode=ParseMode.HTML
