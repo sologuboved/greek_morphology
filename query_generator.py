@@ -17,10 +17,10 @@ def look_up_verb(verb, db_name=DB_NAME, coll_name=VERBS):
 
 
 def guess_stress(verb):
+    guesses = [verb]
     for diacritical in DIACRITICALS:
         if diacritical in verb:
-            return [verb]
-    guesses = list()
+            return guesses
     for indx in range(len(verb)):
         char = verb[indx]
         if char in DIACRITICS:
