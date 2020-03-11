@@ -55,5 +55,6 @@ def process_links_query(update):
         'https://el.wiktionary.org/wiki/{0}\n\n'
         'https://en.wiktionary.org/wiki/{0}\n\n'
         'https://www.lexigram.gr/lex/newg/{0}\n\n'
-        'https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={1}'.format(word, quote(word))
+        'https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={1}'.format(word, quote(word)),
+        disable_web_page_preview=True
     )
