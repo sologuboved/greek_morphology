@@ -38,12 +38,14 @@ def guess_stress(verb):
 
 def look_up_fem_nom_pl(noun):
     if noun.endswith('η') or noun.endswith('ή'):
-        try:
-            return BeautifulSoup(
-                requests.get('https://el.wiktionary.org/wiki/' + noun).content, 'lxml'
-            ).find_all('td', align='left')[1].find('a').get('title').strip()
-        except (IndexError, AttributeError):
-            return
+        pluralis = BeautifulSoup(
+            requests.get('https://el.wiktionary.org/wiki/' + noun).content, 'lxml'
+        ).find_all('td', align='left')
+        for cell in pluralis[1:]:
+            try:
+                return cell.find('a').get('title').strip()
+            except AttributeError:
+                continue
 
 
 if __name__ == '__main__':
@@ -51,5 +53,7 @@ if __name__ == '__main__':
     #     for res in guess_stress(v):
     #         print(res)
     #     print()
+    # print(look_up_fem_nom_pl('θάλασση'))
     # print(look_up_fem_nom_pl('επιτροπή'))
+    # print(look_up_fem_nom_pl('επιστροφή'))
     pass
