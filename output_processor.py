@@ -20,6 +20,8 @@ def get_verb(res, minimalistic, appendix=False):
             separator = '\n'
             newline = str()
         verb, aorist, futurum, transl = process_sequence([res[VERB], res[AORIST], res[FUTURUM], res[TRANSL]])
+        if not transl:
+            separator = str()
         return "{}{} - {} - {}{}<i>{}</i>".format(newline, verb, aorist, futurum, separator, transl)
 
     def get_tense():
