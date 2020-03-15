@@ -61,14 +61,14 @@ def process_links_query(update):
     else:
         paradigm = get_verb(paradigm, minimalistic=True, appendix=True)
     update.message.reply_text(
-        '<a href="https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={encoded_word}">'
-        'Google Translate</a>\n\n'
-        '<a href="https://www.multitran.com/m.exe?l1=1&l2=38&s={word}">Multitran</a>\n\n'
-        '<a href="https://el.wiktionary.org/wiki/{word}">Βικιλεξικό</a>\n\n'
-        '<a href="https://en.wiktionary.org/wiki/{word}">Wiktionary</a>\n\n'
-        'https://www.wordreference.com/gren/{word}\n\n'
-        'https://www.lexigram.gr/lex/newg/{word}\n'
-        '{fem_nom_pl}'
-        '{paradigm}'.format(word=word, encoded_word=quote(word), fem_nom_pl=fem_nom_pl, paradigm=paradigm),
+        "https://www.wordreference.com/gren/{word}\n\n"
+        "https://www.lexigram.gr/lex/newg/{word}\n\n"
+        "<a href='https://el.wiktionary.org/wiki/{word}'>Βικιλεξικό</a> | "
+        "<a href='https://en.wiktionary.org/wiki/{word}'>Wiktionary</a> | "
+        "<a href='https://www.multitran.com/m.exe?l1=1&l2=38&s={word}'>Multitran</a> | "
+        "<a href='https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={encoded_word}'>"
+        "Google Translate</a>"
+        "{fem_nom_pl}"
+        "{paradigm}".format(word=word, encoded_word=quote(word), fem_nom_pl=fem_nom_pl, paradigm=paradigm),
         disable_web_page_preview=True, parse_mode=ParseMode.HTML
     )
