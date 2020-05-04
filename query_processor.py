@@ -3,7 +3,7 @@ from telegram import ParseMode
 from global_vars import NO_VERB, NOT_FOUND, WORDREF_LINK
 from helpers import log_missing
 from special_forms_processor import get_verb, get_fem_nom_pl
-from db_query_generator import look_up_verb, look_up_fem_nom_pl
+from special_forms_obtainer import look_up_verb, look_up_fem_nom_pl
 
 
 def process_start_query(update, context):

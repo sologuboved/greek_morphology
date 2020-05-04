@@ -18,18 +18,18 @@ def look_up_verb(verb, db_name=DB_NAME, coll_name=VERBS):
         return res
 
 
-def guess_stress(verb):
-    guesses = [verb]
+def guess_stress(word):
+    guesses = [word]
     for diacritical in DIACRITICALS:
-        if diacritical in verb:
+        if diacritical in word:
             return guesses
-    for indx in range(len(verb)):
-        char = verb[indx]
+    for indx in range(len(word)):
+        char = word[indx]
         if char in DIACRITICS:
             for diacritical in DIACRITICS[char]:
-                guess = verb[:indx] + diacritical
+                guess = word[:indx] + diacritical
                 try:
-                    guess += verb[indx + 1:]
+                    guess += word[indx + 1:]
                 except IndexError:
                     pass
                 guesses.append(guess)
@@ -44,7 +44,7 @@ def look_up_fem_nom_pl(noun):
             pluralis = soup.find_all('td', align='left')
             for cell in pluralis[1:]:
                 try:
-                    return cell.find('a').get('title').strip()
+                    return cell.find('a').get('title').split('(')[0].strip()
                 except AttributeError:
                     continue
 
@@ -57,4 +57,6 @@ if __name__ == '__main__':
     # print(look_up_fem_nom_pl('θάλασση'))
     # print(look_up_fem_nom_pl('επιτροπή'))
     # print(look_up_fem_nom_pl('άφιξη'))
+    # print(look_up_fem_nom_pl('εισαγωγή'))
+    # print(look_up_fem_nom_pl('ηδονή'))
     pass
