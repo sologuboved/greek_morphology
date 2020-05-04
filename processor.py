@@ -14,12 +14,12 @@ def process_start_query(update, context):
 
 
 def process_help_query(update, context):
-    text = "<b>Key in</b>\n\n" \
-           "<i>verb</i>\nto get links to Wordreference, Lexigram, Βικιλεξικό, and Wiktionary (no guarantee they won't 404)\n\n" \
-           "/v <i>verb (Modern Greek)</i>\nif you wish to see its basic forms (praesens, aoristus, futurum)\n\n" \
-           "/conj <i>verb</i>\nif you want its complete paradigm\n\n" \
-           "/mw <i>optional number</i> \nto see (the optional number of items from) the list of previously " \
-           "logged missing verbs"
+    text = """
+<b>Key in</b>\n
+<i>{verb}</i>\nto get links to Wordreference, Lexigram, Βικιλεξικό, Wiktionary, Multitran, and Google Translate 
+(no guarantee they won't 404)\n
+/p <i>{verb}</i>\nif you want its complete paradigm
+    """
     context.bot.send_message(chat_id=update.message.chat_id, text=text, parse_mode=ParseMode.HTML)
 
 
