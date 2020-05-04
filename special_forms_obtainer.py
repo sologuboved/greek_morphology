@@ -38,15 +38,16 @@ def guess_stress(word):
 
 def look_up_fem_nom_pl(noun):
     if noun.endswith('η') or noun.endswith('ή'):
-        soup = BeautifulSoup(requests.get('https://el.wiktionary.org/wiki/' + noun).content, 'lxml')
-        titles = {title.get('title').strip() for title in soup.find_all('a', {'title': True})}
-        if 'ονομαστική' in titles and 'πληθυντικός' in titles:
-            pluralis = soup.find_all('td', align='left')
-            for cell in pluralis[1:]:
-                try:
-                    return cell.find('a').get('title').split('(')[0].strip()
-                except AttributeError:
-                    continue
+        for noun in guess_stress(noun):
+            soup = BeautifulSoup(requests.get('https://el.wiktionary.org/wiki/' + noun).content, 'lxml')
+            titles = {title.get('title').strip() for title in soup.find_all('a', {'title': True})}
+            if 'ονομαστική' in titles and 'πληθυντικός' in titles:
+                pluralis = soup.find_all('td', align='left')
+                for cell in pluralis[1:]:
+                    try:
+                        return cell.find('a').get('title').split('(')[0].strip()
+                    except AttributeError:
+                        continue
 
 
 if __name__ == '__main__':
