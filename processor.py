@@ -16,9 +16,9 @@ def process_start_query(update, context):
 def process_help_query(update, context):
     text = """
 <b>Key in</b>\n
-<i>{verb}</i>\nto get links to Wordreference, Lexigram, Βικιλεξικό, Wiktionary, Multitran, and Google Translate 
-(no guarantee they won't 404)\n
-/p <i>{verb}</i>\nif you want its complete paradigm
+<i>{word in any form}</i>\nto get links to Wordreference, Lexigram, Βικιλεξικό, Wiktionary, Multitran & Google Translate 
+(no guarantee they won't 404), and some basic forms (if available)\n
+/p <i>{verb in any form}</i>\nif you want its paradigm
     """
     context.bot.send_message(chat_id=update.message.chat_id, text=text, parse_mode=ParseMode.HTML)
 
