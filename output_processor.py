@@ -1,4 +1,4 @@
-from global_vars import NOT_FOUND, MISSING_WORDS_TXT, VERB, AORIST, FUTURUM, TRANSL, PARADIGM
+from global_vars import NOT_FOUND, MISSING_WORDS_TXT, VERB, AORIST, FUTURUM, TRANSL, PARADIGM, WORDREF_LINK
 from cooljugator_globals import COOLJUGATOR_SLICES, FUTURE
 
 
@@ -22,7 +22,8 @@ def get_verb(res, minimalistic, appendix=False):
         verb, aorist, futurum, transl = process_sequence([res[VERB], res[AORIST], res[FUTURUM], res[TRANSL]])
         if not transl:
             separator = str()
-        return "{}{} - {} - {}{}<i>{}</i>".format(newline, verb, aorist, futurum, separator, transl)
+        return "{}<a href='{}'>{}</a> - {} - {}{}<i>{}</i>".format(newline, WORDREF_LINK.format(word=verb),
+                                                                   verb, aorist, futurum, separator, transl)
 
     def get_tense():
         return process_sequence(filter(lambda x: x, res[tense]))

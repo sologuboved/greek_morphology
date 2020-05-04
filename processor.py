@@ -1,6 +1,6 @@
 from urllib.parse import quote
 from telegram import ParseMode
-from global_vars import NO_VERB, NOT_FOUND
+from global_vars import NO_VERB, NOT_FOUND, WORDREF_LINK
 from helpers import log_missing
 from output_processor import get_verb, get_missing_words, get_fem_nom_pl
 from query_generator import look_up_verb, look_up_fem_nom_pl
@@ -62,13 +62,14 @@ def process_links_query(update):
         paradigm = get_verb(paradigm, minimalistic=True, appendix=True)
     update.message.reply_text(
         "https://www.wordreference.com/gren/{word}\n\n"
-        "https://www.lexigram.gr/lex/newg/{word}\n\n"
+        "{wordref_link}\n\n"
         "<a href='https://el.wiktionary.org/wiki/{word}'>Βικιλεξικό</a> | "
         "<a href='https://en.wiktionary.org/wiki/{word}'>Wiktionary</a> | "
         "<a href='https://www.multitran.com/m.exe?l1=1&l2=38&s={word}'>Multitran</a> | "
         "<a href='https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={encoded_word}'>"
         "Google Translate</a>"
         "{fem_nom_pl}"
-        "{paradigm}".format(word=word, encoded_word=quote(word), fem_nom_pl=fem_nom_pl, paradigm=paradigm),
-        disable_web_page_preview=True, parse_mode=ParseMode.HTML
+        "{paradigm}".format(
+            word=word, wordref_link=WORDREF_LINK.format(word=word), encoded_word=quote(word), fem_nom_pl=fem_nom_pl, paradigm=paradigm
+        ), disable_web_page_preview=True, parse_mode=ParseMode.HTML
     )
