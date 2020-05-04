@@ -2,7 +2,7 @@ from urllib.parse import quote
 from telegram import ParseMode
 from global_vars import NO_VERB, NOT_FOUND, WORDREF_LINK
 from helpers import log_missing
-from output_processor import get_verb, get_missing_words, get_fem_nom_pl
+from output_processor import get_verb, get_fem_nom_pl
 from query_generator import look_up_verb, look_up_fem_nom_pl
 
 
@@ -15,7 +15,7 @@ def process_start_query(update, context):
 
 def process_help_query(update, context):
     text = "<b>Key in</b>\n\n" \
-           "<i>verb</i>\nto get links to Wordreference, Βικιλεξικό, and Wiktionary (no guarantee they won't 404)\n\n" \
+           "<i>verb</i>\nto get links to Wordreference, Lexigram, Βικιλεξικό, and Wiktionary (no guarantee they won't 404)\n\n" \
            "/v <i>verb (Modern Greek)</i>\nif you wish to see its basic forms (praesens, aoristus, futurum)\n\n" \
            "/conj <i>verb</i>\nif you want its complete paradigm\n\n" \
            "/mw <i>optional number</i> \nto see (the optional number of items from) the list of previously " \
@@ -36,16 +36,6 @@ def process_verb_query(update, context, minimalistic):
         else:
             reply = get_verb(paradigm, minimalistic)
     context.bot.send_message(chat_id=update.message.chat_id, text=reply, parse_mode=ParseMode.HTML)
-
-
-def process_missing_words_query(update, context):
-    query = update['message']['text'].split()
-    try:
-        query = query[1]
-    except IndexError:
-        query = str()
-    reply = get_missing_words(query)
-    context.bot.send_message(chat_id=update.message.chat_id, text=reply)
 
 
 def process_links_query(update):

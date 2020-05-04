@@ -1,4 +1,4 @@
-from global_vars import NOT_FOUND, MISSING_WORDS_TXT, VERB, AORIST, FUTURUM, TRANSL, PARADIGM, WORDREF_LINK
+from global_vars import VERB, AORIST, FUTURUM, TRANSL, PARADIGM, WORDREF_LINK
 from cooljugator_globals import COOLJUGATOR_SLICES, FUTURE
 
 
@@ -42,19 +42,6 @@ def get_verb(res, minimalistic, appendix=False):
             forms = get_tense()
         paradigm.append("<b>{}:</b>\n{}".format(label, ", ".join(forms)))
     return "\n\n".join(paradigm)
-
-
-def get_missing_words(query):
-    try:
-        with open(MISSING_WORDS_TXT) as handler:
-            lines = handler.readlines()
-            try:
-                start = int(query)
-            except (ValueError, TypeError):
-                start = 0
-            return ''.join(lines[-start:]).strip()
-    except FileNotFoundError:
-        return NOT_FOUND
 
 
 def get_fem_nom_pl(res):
