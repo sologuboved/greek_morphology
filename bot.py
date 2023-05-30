@@ -1,7 +1,7 @@
 from telegram.ext import Updater, MessageHandler, CommandHandler, Filters
 from helpers import write_pid
 from query_processor import process_verb_query, process_links_query, process_start_query, process_help_query
-from tkn import TOKEN
+from userinfo import TOKEN
 
 
 """

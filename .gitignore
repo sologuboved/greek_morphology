@@ -1,3 +1,5 @@
 .idea/
-bits_and_pieces/
-tkn.py
+.DS_Store
+__pycache__/
+userinfo.py
+venv_greek_morphology/
