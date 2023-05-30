@@ -1,25 +1,35 @@
 from urllib.parse import quote
+
 from telegram import ParseMode
+
 from global_vars import NO_VERB, NOT_FOUND, WORDREF_LINK
 from helpers import log_missing
-from special_forms_processor import get_verb, get_fem_nom_pl
-from special_forms_obtainer import look_up_verb, look_up_fem_nom_pl
+from special_forms_processor import get_fem_nom_pl, get_verb
+from special_forms_obtainer import look_up_fem_nom_pl, look_up_verb
 
 
 def process_start_query(update, context):
-    text = "<b>Gr-En reference</b>\n\n" \
-           "for all info contact @sologuboved\n\n" \
-           "https://github.com/sologuboved/greek_morphology"
+    text = """<b>Gr-En reference</b>
+    
+
+"for all info contact @sologuboved
+
+
+"https://github.com/sologuboved/greek_morphology
+"""
     context.bot.send_message(chat_id=update.message.chat_id, text=text, parse_mode=ParseMode.HTML)
 
 
 def process_help_query(update, context):
-    text = """
-<b>Key in</b>\n
-<i>{word in any form}</i>\nto get links to Wordreference, Lexigram, Βικιλεξικό, Wiktionary, Multitran & Google Translate 
-(no guarantee they won't 404), and some basic forms (if available)\n
-/p <i>{verb in any form}</i>\nif you want its paradigm
-    """
+    text = """<b>Key in</b>
+    
+<i>{word in any form}</i>
+to get links to Wordreference, Lexigram, Βικιλεξικό, Wiktionary, Multitran & Google Translate 
+(no guarantee they won't 404), and some basic forms (if available)
+
+/p <i>{verb in any form}</i>
+if you want its paradigm
+"""
     context.bot.send_message(chat_id=update.message.chat_id, text=text, parse_mode=ParseMode.HTML)
 
 
@@ -50,17 +60,22 @@ def process_links_query(update):
         paradigm = str()
     else:
         paradigm = get_verb(paradigm, minimalistic=True, appendix=True)
-    update.message.reply_text(
-        "{wordref_link}\n\n"
-        "https://www.lexigram.gr/lex/newg/{word}\n\n"
-        "<a href='https://el.wiktionary.org/wiki/{word}'>Βικιλεξικό</a> | "
-        "<a href='https://en.wiktionary.org/wiki/{word}'>Wiktionary</a> | "
-        "<a href='https://www.multitran.com/m.exe?l1=1&l2=38&s={word}'>Multitran</a> | "
-        "<a href='https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={encoded_word}'>"
-        "Google Translate</a>"
-        "{fem_nom_pl}"
-        "{paradigm}".format(
-            wordref_link=WORDREF_LINK.format(word=word),
-            word=word, encoded_word=quote(word), fem_nom_pl=fem_nom_pl, paradigm=paradigm
-        ), disable_web_page_preview=True, parse_mode=ParseMode.HTML
-    )
+    update.message.reply_text("""{wordref_link}
+    
+    
+https://www.lexigram.gr/lex/newg/{word}
+
+<a href='https://el.wiktionary.org/wiki/{word}'>Βικιλεξικό</a> |
+<a href='https://en.wiktionary.org/wiki/{word}'>Wiktionary</a> |
+<a href='https://www.multitran.com/m.exe?l1=1&l2=38&s={word}'>Multitran</a> |
+<a href='https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={encoded_word}'>
+Google Translate</a>
+{fem_nom_pl}
+{paradigm}
+""".format(
+        wordref_link=WORDREF_LINK.format(word=word),
+        word=word,
+        encoded_word=quote(word),
+        fem_nom_pl=fem_nom_pl,
+        paradigm=paradigm,
+    ), disable_web_page_preview=True, parse_mode=ParseMode.HTML)

@@ -1,19 +1,18 @@
-import time
+from functools import wraps
 import json
 import os
-import sys
 import re
-from functools import wraps
+import sys
+import time
+
 from global_vars import MISSING_WORDS_TXT
 
 
 def which_watch(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-
         def report_time():
-            print("\n{} took {}\n".format(func.__name__,
-                                          time.strftime("%H:%M:%S", time.gmtime(time.perf_counter() - start))))
+            print(f"\n{func.__name__} took {time.strftime('%H:%M:%S', time.gmtime(time.perf_counter() - start))}\n")
 
         start = time.perf_counter()
         try:

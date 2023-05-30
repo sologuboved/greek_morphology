@@ -1,7 +1,11 @@
-from global_vars import *
-from cooljugator_globals import RAW_COOLJUGATOR_PARADIGM_JSON, COOLJUGATOR_PARADIGM_JSON, COOLJUGATOR_FIELDNAMES, \
-    FUTURE1, PASTPERFECT1
-from helpers import which_watch, read_json_lines, write_json_lines
+from cooljugator_globals import (
+    COOLJUGATOR_FIELDNAMES,
+    FUTURE1,
+    PASTPERFECT1,
+    RAW_COOLJUGATOR_PARADIGM_JSON,
+)
+from global_vars import AORIST, FUTURUM, PARADIGM, TRANSL, VERB
+from helpers import read_json_lines, which_watch, write_json_lines
 
 
 @which_watch
@@ -13,10 +17,10 @@ def process_paradigms(final_paradigm_json, raw_paradigm_json=RAW_COOLJUGATOR_PAR
 
 
 def process_line(line):
-    return {VERB: line[VERB], TRANSL: line[TRANSL],
-            FUTURUM: "θα {}".format(line[FUTURE1]), AORIST: line[PASTPERFECT1],
-            PARADIGM: [line[fieldname] if line[fieldname] else None for fieldname in COOLJUGATOR_FIELDNAMES]}
-
-
-if __name__ == '__main__':
-    process_paradigms(COOLJUGATOR_PARADIGM_JSON)
+    return {
+        VERB: line[VERB],
+        TRANSL: line[TRANSL],
+        FUTURUM: "θα {}".format(line[FUTURE1]),
+        AORIST: line[PASTPERFECT1],
+        PARADIGM: [line[fieldname] if line[fieldname] else None for fieldname in COOLJUGATOR_FIELDNAMES],
+    }

@@ -1,7 +1,8 @@
 from pymongo import MongoClient
-from global_vars import DB_NAME, VERBS, VERB, PARADIGM, SOURCE, LOCALHOST, PORT
-from helpers import which_watch, counter, read_json_lines
-from coll_operations import add_indices
+
+from db_ops import add_indices
+from global_vars import DB_NAME, LOCALHOST, PARADIGM, PORT, SOURCE, VERB, VERBS
+from helpers import counter, read_json_lines, which_watch
 
 
 @which_watch
@@ -14,16 +15,6 @@ def upload(source_json, source, db_name=DB_NAME, coll_name=VERBS, drop=False, in
     for line in read_json_lines(source_json):
         next(count)
         line[SOURCE] = source
-        target.insert(line)
-    add_indices(target, indices)
-    print('\nCurrently,', target.count(), 'entries')
-
-
-if __name__ == '__main__':
-    # from cooljugator_globals import COOLJUGATOR_PARADIGM_JSON
-    # upload(COOLJUGATOR_PARADIGM_JSON, 'c', drop=True)
-
-    # from global_vars import WIKILEXICO_ACT_VERBS
-    # from wikilexico_globals import WIKILEXICO_PARADIGM_JSON
-    # upload(WIKILEXICO_PARADIGM_JSON, 'w')
-    ...
+        target.insert_one(line)
+    add_indices(target, coll_name, indices)
+    print('\nCurrently,', target.estimated_document_count(), 'entries')

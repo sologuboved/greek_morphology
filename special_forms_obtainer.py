@@ -1,19 +1,18 @@
-import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
-from global_vars import *
+import requests
+
+from global_vars import DB_NAME, DIACRITICALS, DIACRITICS, LOCALHOST, PARADIGM, PORT, VERBS
 
 
 def look_up_verb(verb, db_name=DB_NAME, coll_name=VERBS):
     verb = verb.lower()
     coll = MongoClient(LOCALHOST, PORT)[db_name][coll_name]
     for guess in guess_stress(verb):
-        try:
-            res = coll.find({PARADIGM: guess})[0]
-        except IndexError:
-            try:
-                res = coll.find({PARADIGM: {'$elemMatch': {'$elemMatch': {'$in': [guess]}}}})[0]
-            except IndexError:
+        res = coll.find_one({PARADIGM: guess})
+        if res is None:
+            res = coll.find_one({PARADIGM: {'$elemMatch': {'$elemMatch': {'$in': [guess]}}}})
+            if res is None:
                 continue
         return res
 
@@ -48,16 +47,3 @@ def look_up_fem_nom_pl(noun):
                         return cell.find('a').get('title').split('(')[0].strip()
                     except AttributeError:
                         continue
-
-
-if __name__ == '__main__':
-    # for v in ('αγοραζομαι', 'αγυρντιζω', 'εντυπωσιάζομαι', 'ηχογραφω'):
-    #     for res in guess_stress(v):
-    #         print(res)
-    #     print()
-    # print(look_up_fem_nom_pl('θάλασση'))
-    # print(look_up_fem_nom_pl('επιτροπή'))
-    # print(look_up_fem_nom_pl('άφιξη'))
-    # print(look_up_fem_nom_pl('εισαγωγή'))
-    # print(look_up_fem_nom_pl('ηδονή'))
-    pass

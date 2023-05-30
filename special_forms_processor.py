@@ -1,5 +1,5 @@
-from global_vars import VERB, AORIST, FUTURUM, TRANSL, PARADIGM, WORDREF_LINK
 from cooljugator_globals import COOLJUGATOR_SLICES, FUTURE
+from global_vars import AORIST, FUTURUM, PARADIGM, TRANSL, VERB, WORDREF_LINK
 
 
 def get_verb(res, minimalistic, appendix=False):
@@ -22,8 +22,14 @@ def get_verb(res, minimalistic, appendix=False):
         verb, aorist, futurum, transl = process_sequence([res[VERB], res[AORIST], res[FUTURUM], res[TRANSL]])
         if not transl:
             separator = str()
-        return "{}<a href='{}'>{}</a> - {} - {}{}<i>{}</i>".format(newline, WORDREF_LINK.format(word=verb),
-                                                                   verb, aorist, futurum, separator, transl)
+        return "{}<a href='{}'>{}</a> - {} - {}{}<i>{}</i>".format(
+            newline, WORDREF_LINK.format(word=verb),
+            verb,
+            aorist,
+            futurum,
+            separator,
+            transl,
+        )
 
     def get_tense():
         return process_sequence(filter(lambda x: x, res[tense]))
@@ -33,14 +39,14 @@ def get_verb(res, minimalistic, appendix=False):
 
     res = res[PARADIGM]
     if not res:
-        return "Paradigm is missing\n\n{}".format(get_minimalistic())
+        return f"Paradigm is missing\n\n{get_minimalistic()}"
     paradigm = list()
     for label, tense in COOLJUGATOR_SLICES:
         if label == FUTURE:
             forms = map(lambda x: "θα " + x, get_tense())
         else:
             forms = get_tense()
-        paradigm.append("<b>{}:</b>\n{}".format(label, ", ".join(forms)))
+        paradigm.append(f"<b>{label}:</b>\n{', '.join(forms)}")
     return "\n\n".join(paradigm)
 
 

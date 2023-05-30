@@ -1,11 +1,13 @@
 import itertools
 import re
-import requests
+
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
-from wikilexico_globals import UNFILTERED_WIKILEXICO_LIST_JSON, FILTERED_WIKILEXICO_LIST_JSON, WIKILEXICO_PARADIGM_JSON
+import requests
+
 from global_vars import LOCALHOST, PORT, DB_NAME, VERBS, VERB, FUTURUM, AORIST, PARADIGM, TRANSL
 from helpers import which_watch, counter, write_json_lines, read_json_lines
+from wikilexico_globals import UNFILTERED_WIKILEXICO_LIST_JSON, FILTERED_WIKILEXICO_LIST_JSON, WIKILEXICO_PARADIGM_JSON
 
 
 @which_watch

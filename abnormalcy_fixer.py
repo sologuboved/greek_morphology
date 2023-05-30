@@ -1,12 +1,14 @@
 import re
-import requests
-from bs4 import BeautifulSoup
-from pymongo import MongoClient
-from bson.objectid import ObjectId
-from global_vars import LOCALHOST, PORT, DB_NAME, VERBS, VERB, TRANSL
-from cooljugator_globals import COOLJUGATOR_DO_TRANSL
-from helpers import dump_utf_json, load_utf_json, counter, which_watch
 
+from bs4 import BeautifulSoup
+from bson.objectid import ObjectId
+from pymongo import MongoClient
+import requests
+
+from cooljugator_globals import COOLJUGATOR_DO_TRANSL
+from db_ops import save_entry
+from global_vars import DB_NAME, LOCALHOST, PORT, TRANSL, VERB, VERBS
+from helpers import counter, dump_utf_json, load_utf_json, which_watch
 
 DO_JSON = 'do.json'
 DUPLICATES_JSON = 'duplicates.json'
@@ -14,8 +16,10 @@ MORPH_ANOMALIES_JSON = 'morph_anomalies.json'
 
 
 def collect_do():
-    dump_utf_json(sorted([entry[VERB] for entry in MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS].find({TRANSL: 'do'})]),
-                  DO_JSON)
+    dump_utf_json(
+        sorted([entry[VERB] for entry in MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS].find({TRANSL: 'do'})]),
+        DO_JSON,
+    )
 
 
 @which_watch
@@ -28,8 +32,9 @@ def collect_do_transls():
         next(count)
         transls[verb] = pattern.findall(
             BeautifulSoup(
-                requests.get('https://cooljugator.com/gr/' + verb).content, 'lxml'
-            ).find('span', id='mainform').text
+                requests.get('https://cooljugator.com/gr/' + verb).content,
+                'lxml',
+            ).find('span', id='mainform').text,
         )[0]
     print()
     dump_utf_json(transls, COOLJUGATOR_DO_TRANSL)
@@ -42,9 +47,9 @@ def fix_do_transls():
     count = counter(len(transls))
     for verb, transl in transls:
         next(count)
-        match = coll.find({VERB: verb, TRANSL: 'do'})[0]
+        match = coll.find_one({VERB: verb, TRANSL: 'do'})
         match[TRANSL] = transl
-        coll.save(match)
+        save_entry(coll, match)
     print()
 
 
@@ -52,7 +57,7 @@ def clean_do():
     coll = MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS]
     for entry in coll.find({VERB: {'$ne': 'κάνω'}, TRANSL: 'do'}):
         entry[TRANSL] = str()
-        coll.save(entry)
+        save_entry(coll, entry)
 
 
 @which_watch
@@ -60,7 +65,7 @@ def collect_duplicates():
     visited = set()
     duplicates = set()
     coll = MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS]
-    count = counter(coll.count())
+    count = counter(coll.estimated_document_count())
     for entry in coll.find():
         next(count)
         verbs = entry[VERB]
@@ -77,7 +82,6 @@ def collect_duplicates():
 
 @which_watch
 def remove_duplicates():
-
     def delete_except(good_entry):
         coll.delete_many({VERB: verb, '_id': {'$ne': ObjectId(good_entry['_id'])}})
 
@@ -85,9 +89,8 @@ def remove_duplicates():
     abnormal = set()
     coll = MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS]
     for verb in load_utf_json(DUPLICATES_JSON):
-        match = coll.find({VERB: verb})
         translated = biformed = silly = None
-        for entry in match:
+        for entry in coll.find({VERB: verb}):
             if isinstance(entry[VERB], list):
                 biformed = entry
             elif entry[TRANSL]:
@@ -96,7 +99,7 @@ def remove_duplicates():
                 silly = entry
         if biformed and translated:
             biformed[TRANSL] = translated[TRANSL]
-            coll.save(biformed)
+            save_entry(coll, biformed)
             delete_except(biformed)
             merge_count += 1
         elif translated:
@@ -124,7 +127,7 @@ def remove_duplicates():
 def remove_morphologically_abnormal_verbs():
     abnormal_count = 0
     coll = MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS]
-    count = counter(coll.count())
+    count = counter(coll.estimated_document_count())
     for entry in coll.find():
         next(count)
         verbs = entry[VERB]
@@ -135,13 +138,3 @@ def remove_morphologically_abnormal_verbs():
                 coll.delete_one({VERB: verb})
                 abnormal_count += 1
     print("\nRemoved {} abnormal verbs".format(abnormal_count))
-
-
-if __name__ == '__main__':
-    # collect_do()
-    # collect_do_transls()
-    # fix_do_transls()
-    # clean_do()
-    # collect_duplicates()
-    # remove_duplicates()
-    remove_morphologically_abnormal_verbs()
