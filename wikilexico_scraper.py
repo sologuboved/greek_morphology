@@ -5,9 +5,9 @@ from bs4 import BeautifulSoup
 from pymongo import MongoClient
 import requests
 
-from global_vars import LOCALHOST, PORT, DB_NAME, VERBS, VERB, FUTURUM, AORIST, PARADIGM, TRANSL
-from helpers import which_watch, counter, write_json_lines, read_json_lines
-from wikilexico_globals import UNFILTERED_WIKILEXICO_LIST_JSON, FILTERED_WIKILEXICO_LIST_JSON, WIKILEXICO_PARADIGM_JSON
+from global_vars import AORIST, DB_NAME, FUTURUM, LOCALHOST, PARADIGM, PORT, TRANSL, VERB, VERBS
+from helpers import counter, read_json_lines, which_watch, write_json_lines
+from wikilexico_globals import FILTERED_WIKILEXICO_LIST_JSON, UNFILTERED_WIKILEXICO_LIST_JSON
 
 
 @which_watch
@@ -40,7 +40,7 @@ def filter_verbs(filtered_list_json, unfiltered_list_json=UNFILTERED_WIKILEXICO_
     coll = MongoClient(LOCALHOST, PORT)[DB_NAME][VERBS]
     for verb in read_json_lines(unfiltered_list_json):
         next(count)
-        if not coll.find({VERB: verb}).count():
+        if coll.find_one({VERB: verb}) is None:
             yield verb
     print()
 
@@ -48,6 +48,7 @@ def filter_verbs(filtered_list_json, unfiltered_list_json=UNFILTERED_WIKILEXICO_
 @which_watch
 @write_json_lines
 def collect_active_voice_paradigms(raw_paradigm_json, list_json=FILTERED_WIKILEXICO_LIST_JSON):
+    print(f'{raw_paradigm_json}...')
     count = counter()
     for verb in read_json_lines(list_json):
         next(count)
@@ -65,7 +66,6 @@ def collect_active_voice_paradigms(raw_paradigm_json, list_json=FILTERED_WIKILEX
 
 
 def get_paradigm(verb, active_voice):
-
     def get_columns():
         return rows[index].find_all('td')
 
@@ -120,24 +120,13 @@ def get_paradigm(verb, active_voice):
     aorist.append(de_br(pers3_pl[1]))
     raw_future.append(de_bracket(pers3_pl[2]))
 
-    return list(itertools.chain(present,
-                                fix_future(raw_future),
-                                aorist,
-                                imperfect,
-                                list(filter(lambda v: v, imperative))))
-
-
-# def get_active_voice_rows(verb):
-#     verb = BeautifulSoup(requests.get('https://el.wiktionary.org/wiki/' + verb).content, 'lxml')
-#     if not verb.find('span', {'class': 'inflexions'}):
-#         return
-#     for table in verb.find_all('tbody'):
-#         try:
-#             first_header = table.find('center').text.strip()
-#         except AttributeError:
-#             continue
-#         if first_header == "Εξακολουθητικοί χρόνοι":
-#             return table.find_all('tr')
+    return list(itertools.chain(
+        present,
+        fix_future(raw_future),
+        aorist,
+        imperfect,
+        list(filter(lambda v: v, imperative)),
+    ))
 
 
 def get_rows(verb, active_voice):
@@ -170,12 +159,3 @@ def fix_future(raw_future):
 
 def get_shortened(paradigm):
     return {VERB: paradigm[0], FUTURUM: "θα {}".format(paradigm[6]), AORIST: paradigm[12], TRANSL: str()}
-
-
-if __name__ == '__main__':
-    # collect_verbs(UNFILTERED_WIKILEXICO_LIST_JSON)
-    # filter_verbs(FILTERED_WIKILEXICO_LIST_JSON)
-    # collect_active_voice_paradigms(WIKILEXICO_PARADIGM_JSON)
-    # print(get_active_voice_paradigm('αγανοϋφαίνω'))
-    # get_active_voice_rows('αγανοϋφαίνω')
-    print(get_paradigm('αερίζω', False))
