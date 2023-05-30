@@ -1,14 +1,6 @@
-LOCALHOST = 'localhost'
-PORT = 27017
-DB_NAME = 'ellinika'
-VERBS = 'verbs'
-WIKILEXICO_ACT_VERBS = 'wikilexico_active_voice_verbs'
-VERB = 'verb'
-TRANSL = 'eng'
-FUTURUM = 'futurum'
 AORIST = 'aorist'
-PARADIGM = 'paradigm'
-SOURCE = 'source'
+DB_NAME = 'ellinika'
+DIACRITICALS = ['ά', 'έ', 'ή', 'ί', 'ϊ', 'ΐ', 'ό', 'ύ', 'ϋ', 'ΰ', 'ώ']
 DIACRITICS = {
     'α': ('ά',),
     'ε': ('έ',),
@@ -18,8 +10,16 @@ DIACRITICS = {
     'υ': ('ύ', 'ϋ', 'ΰ'),
     'ω': ('ώ',)
 }
-DIACRITICALS = ['ά', 'έ', 'ή', 'ί', 'ϊ', 'ΐ', 'ό', 'ύ', 'ϋ', 'ΰ', 'ώ']
-NOT_FOUND = 'Not found'
-NO_VERB = 'Verb is missing'
+FUTURUM = 'futurum'
+LOCALHOST = 'localhost'
 MISSING_WORDS_TXT = 'missing_words.txt'
+NO_VERB = 'Verb is missing'
+NOT_FOUND = 'Not found'
+PARADIGM = 'paradigm'
+PORT = 27017
+SOURCE = 'source'
+TRANSL = 'eng'
+VERB = 'verb'
+VERBS = 'verbs'
+WIKILEXICO_ACT_VERBS = 'wikilexico_active_voice_verbs'
 WORDREF_LINK = 'https://www.wordreference.com/gren/{word}'
