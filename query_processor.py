@@ -62,19 +62,15 @@ async def process_links_query(update, context):
         paradigm = get_verb(paradigm, minimalistic=True, appendix=True)
     await context.bot.send_message(
         chat_id=update.message.chat_id,
-        text="""{wordref_link}
-    
-    
-https://www.lexigram.gr/lex/newg/{word}
-
-<a href='https://el.wiktionary.org/wiki/{word}'>Βικιλεξικό</a> |
-<a href='https://en.wiktionary.org/wiki/{word}'>Wiktionary</a> |
-<a href='https://www.multitran.com/m.exe?l1=1&l2=38&s={word}'>Multitran</a> |
-<a href='https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={encoded_word}'>
-Google Translate</a>
-{fem_nom_pl}
-{paradigm}
-""".format(
+        text="{wordref_link}\n\n"
+        "https://www.lexigram.gr/lex/newg/{word}\n\n"
+        "<a href='https://el.wiktionary.org/wiki/{word}'>Βικιλεξικό</a> | "
+        "<a href='https://en.wiktionary.org/wiki/{word}'>Wiktionary</a> | "
+        "<a href='https://www.multitran.com/m.exe?l1=1&l2=38&s={word}'>Multitran</a> | "
+        "<a href='https://translate.google.com/#view=home&op=translate&sl=el&tl=en&text={encoded_word}'>"
+        "Google Translate</a>"
+        "{fem_nom_pl}"
+        "{paradigm}".format(
             wordref_link=WORDREF_LINK.format(word=word),
             word=word,
             encoded_word=quote(word),
